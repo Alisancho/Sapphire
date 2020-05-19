@@ -55,20 +55,20 @@ class BusinessTaskServiceImpl(val producerSettings: ProducerSettings[String, Str
     requestID <- requestIDGen
     body      <- getBody(httpRequest)
     _         <- Task {logger.info(s"SEARCH_REQUEST requestId=$requestID boby=$body")}
-    rqUID     <- getRqUID(body, requestID)
-    _         = if (rqUID == "") throw SapphireError(requestID.some, errorDescription = ERROR_NO_RQUID.some)
+    uid     <- getRqUID(body, requestID)
+    _         = if (uid == "") throw SapphireError(requestID.some, errorDescription = ERROR_NO_RQUID.some)
     _         <- kafkaTasks.setKafka("monitoringApi", body).timeoutWith(40 seconds, SapphireError(requestID.some, errorDescription = ERROR_KAFKA_PRODUCER.some))
-    l         <- elasticTasks.getValueFromElastic2(ELASTIC_INDEX, "rqUID", rqUID)
+    l         <- elasticTasks.getValueFromElastic2(ELASTIC_INDEX, "UID", uid)
   } yield l.getOrElse(ResponseJSON(requestId = requestID.some, errorDescription = ERROR_ELASTIC.some, success = false).toJson.toString())
 
   //  val searshInElastic2: HttpRequest => Task[Either[Throwable, String]] = httpRequest => (for {
   //    requestID <- requestIDGen
   //    body      <- getBody(httpRequest)
   //    _         <- Task {logger.info(s"SEARCH_REQUEST requestId=$requestID boby=$body")}
-  //    rqUID     <- getRqUID(body, requestID)
-  //    _         = if (rqUID == "")   GenesisError(Option.apply(requestID), success = false,errorDescription = Option.apply(ERROR_NO_RQUID))
+  //    uid     <- getRqUID(body, requestID)
+  //    _         = if (uid == "")   GenesisError(Option.apply(requestID), success = false,errorDescription = Option.apply(ERROR_NO_RQUID))
   //    _         <- kafkaTasks.setKafka("monitoringApi", body).timeoutWith(40 seconds, GenesisError(Option.apply(requestID), success = false,errorDescription = Option.apply(ERROR_KAFKA_PRODUCER)))
-  //    l         <- elasticTasks.getValueFromElastic2(ELASTIC_INDEX, "rqUID", rqUID)
+  //    l         <- elasticTasks.getValueFromElastic2(ELASTIC_INDEX, "uid", uid)
   //  } yield Right(l.getOrElse(ResponseJSON(requestId = Option.apply(requestID),
   //    errorDescription = Option.apply(ERROR_ELASTIC),
   //    success = false).toJson.toString())))
