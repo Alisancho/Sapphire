@@ -18,7 +18,7 @@ val circeDerVersion   = "0.11.0-M1"
 val catsVersion       = "1.6.0"
 val catsEffectVersion = "1.1.0"
 val fs2Version        = "1.0.3"
-
+lazy val softwaremill      = "2.3.3"
 libraryDependencies ++= Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -45,6 +45,12 @@ libraryDependencies ++= Seq(
 )
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0"
 
+libraryDependencies ++= Seq(
+  "com.softwaremill.macwire" %% "macrosakka" % softwaremill % "provided",
+  "com.softwaremill.macwire" %% "macros"     % softwaremill % "provided",
+  "com.softwaremill.macwire" %% "proxy"      % softwaremill,
+  "com.softwaremill.macwire" %% "util"       % softwaremill
+)
 
 
 lazy val commonSettings = Seq(
