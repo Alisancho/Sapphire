@@ -1,6 +1,6 @@
 package ru.sapphire.service
 
-import akka.kafka.{ConsumerSettings, ProducerSettings}
+import akka.kafka.ConsumerSettings
 
 import org.apache.kafka.clients.consumer.ConsumerConfig
 

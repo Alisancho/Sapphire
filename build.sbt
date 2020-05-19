@@ -52,6 +52,8 @@ libraryDependencies ++= Seq(
   "com.softwaremill.macwire" %% "util"       % softwaremill
 )
 
+// https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient
+libraryDependencies += "com.ibm.mq" % "com.ibm.mq.allclient" % "9.1.5.0"
 
 lazy val commonSettings = Seq(
   test in assembly :={}
